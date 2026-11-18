@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La red social del aula · boceto para TV</title>
+<style>
+:root{
+  --surface:#ffffff; --plane:#ececec; --ink:#121212; --ink2:#4a4a4a; --muted:#6b6b6b; --line:#e2e2e2; --peer:#cfd2d8; --desk:#e6e8ec; --track:#efefef;
+  --r0:#d9480f; --r1:#f59f00; --r2:#4c8df6; --r3:#1b3fae;
+  --rej:#d6204a; --nop:#7c4dff;
+  --head:Georgia,"Times New Roman","Liberation Serif",serif;
+  --font:system-ui,-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--plane);font-family:var(--font);color:var(--ink);overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:var(--surface);transform-origin:center center;overflow:hidden}
+.scene{position:absolute;inset:0;padding:64px 96px 0;opacity:0;visibility:hidden;transition:opacity .45s ease}
+.scene.on{opacity:1;visibility:visible}
+.scene::before{content:"";position:absolute;left:96px;top:0;width:150px;height:8px;background:var(--ink)}
+h1{font-family:var(--head);font-size:72px;line-height:1.06;font-weight:700;letter-spacing:-.015em;max-width:1720px}
+.sub{font-size:36px;color:var(--ink2);margin-top:14px}
+.foot{position:absolute;left:96px;right:96px;bottom:26px;display:flex;justify-content:space-between;font-size:16px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.sw{display:inline-block;width:30px;height:30px;border-radius:50%;flex:none}
+.c0{background:var(--r0)}.c1{background:var(--r1)}.c2{background:var(--r2)}.c3{background:var(--r3)}
+
+/* 1 */
+.cards{display:grid;grid-template-columns:repeat(4,400px);gap:40px;margin-top:26px}
+.card{text-align:center;border-top:8px solid;padding-top:6px}
+.card.k0{border-color:var(--r0)}.card.k1{border-color:var(--r1)}.card.k2{border-color:var(--r2)}.card.k3{border-color:var(--r3)}
+.card svg{display:block;margin:0 auto}
+.card .num{font-family:var(--head);font-size:150px;font-weight:700;line-height:.95;margin-top:2px}
+.card .w{font-size:30px;color:var(--ink2);margin-top:4px}
+.key{display:flex;justify-content:center;gap:80px;font-size:27px;color:var(--ink2);margin-top:26px;align-items:center}
+.key svg{vertical-align:middle;margin-right:16px}
+
+/* salón */
+.salon{display:flex}
+.salon.solo{justify-content:center}
+.salon.solo .room{margin-left:0}
+.room{width:1100px;height:780px;margin-top:14px;margin-left:-16px;flex:none;overflow:visible}
+.stu{fill:var(--peer);transition:fill .5s ease,opacity .25s}
+.stu .hd,.stu .bd{fill:inherit}
+.stu .dk{fill:var(--desk)}
+.ring{display:none;fill:none;stroke:var(--nop);stroke-width:3.5;stroke-dasharray:7 7}
+.stu.iso .ring{display:block}
+.panel{flex:1;padding-left:56px;padding-top:34px}
+
+/* 2 */
+.hero45{display:inline-flex;align-items:baseline;background:none;border:0;border-radius:22px;padding:2px 22px 8px 0;font-family:var(--font);color:var(--ink);cursor:pointer;transition:background .2s,box-shadow .2s}
+.hero45 .n{font-size:220px;font-weight:800;letter-spacing:-.05em;line-height:.95}
+.hero45 small{font-size:96px;font-weight:700;color:var(--ink2);margin-left:6px}
+.hero45:hover,.hero45.on{background:#fff4e0;box-shadow:0 0 0 6px #fff4e0}
+.lead{font-size:40px;font-weight:600;line-height:1.15;margin-top:8px}
+.hint{display:inline-block;font-size:19px;color:var(--muted);border:1.5px dashed var(--base,#c9c9c9);border-radius:10px;padding:6px 12px;margin-top:14px}
+.lgt{font-size:22px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:30px}
+.legend{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.lg{display:flex;align-items:center;gap:18px;padding:8px 14px;border-radius:14px;border:0;background:none;color:var(--ink);font-family:inherit;text-align:left;width:100%;transition:opacity .25s,background .2s}
+.lg b{font-family:var(--head);font-size:56px;font-weight:700;width:48px;line-height:1}
+.lg .v{margin-left:auto;font-size:34px;color:var(--ink2);font-variant-numeric:tabular-nums;font-weight:600}
+.lg:hover,.lg.hl{background:#f3f3f3}
+
+/* 3 y 4 */
+.pan2{flex:1;padding-left:60px;padding-top:50px}
+.rw{margin-bottom:46px}
+.rw .lb{font-size:30px;color:var(--ink2);font-weight:600}
+.rw .nm{font-size:150px;font-weight:800;letter-spacing:-.04em;line-height:1;margin-top:2px}
+.rw .nm small{font-size:.45em;font-weight:700;color:var(--ink2);margin-left:4px}
+.rw.old .nm{color:var(--muted)}
+.bar{height:34px;background:var(--track);border-radius:6px;margin-top:10px;width:580px;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;display:block}
+.ax{display:flex;justify-content:space-between;width:580px;font-size:18px;color:var(--muted);margin-top:6px}
+.diff{display:inline-flex;align-items:center;gap:12px;font-size:36px;font-weight:700;border:2.5px solid var(--ink);border-radius:999px;padding:8px 24px}
+
+/* 5 y 6 */
+#cmp{width:1728px;height:700px;margin-top:40px;overflow:visible}
+.dot{transform-box:fill-box;transform-origin:center}
+.pop .dot{animation:pop .35s ease-out both}
+.bar5{transform-box:fill-box;transform-origin:bottom}
+.pop .bar5{animation:grow .7s ease-out both}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+#grp{width:1728px;height:770px;margin-top:-50px;overflow:visible}
+.cl{transform-box:fill-box;transform-origin:center}
+.pop .cl{animation:pop .5s ease-out both}
+#pin6{transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+
+/* chrome */
+#tip{position:fixed;z-index:20;pointer-events:none;background:#121212;color:#fff;padding:9px 13px;border-radius:9px;font-size:15px;line-height:1.35;max-width:320px;opacity:0;transition:opacity .1s}
+#chrome{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:6px;align-items:center;background:rgba(255,255,255,.95);border:1px solid #d6d6d6;border-radius:14px;padding:6px 8px;z-index:10;transition:opacity .3s;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+#chrome.hide{opacity:0;pointer-events:none}
+#chrome button{font:inherit;font-size:14px;color:var(--ink);background:none;border:0;border-radius:9px;padding:7px 11px;cursor:pointer}
+#chrome button:hover{background:rgba(0,0,0,.07)}
+#chrome .dotnav{display:flex;gap:2px}
+#chrome .dotnav button{width:30px;padding:7px 0;text-align:center;color:var(--muted)}
+#chrome .dotnav button.on{color:#000;font-weight:700;background:rgba(0,0,0,.09)}
+.sep{width:1px;height:20px;background:#d6d6d6;margin:0 4px}
+body.clean #chrome{display:none}
+@media (prefers-reduced-motion:reduce){.scene{transition:none}.stu{transition:none}.pop .dot,.pop .cl,.pop .bar5{animation:none}#pin6{transition:none}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 · Introducción -->
+<section class="scene" data-t="Introducción">
+  <h1>Reciprocidad: cuando dos alumnos se eligen entre sí</h1>
+  <div class="cards" id="cards"></div>
+  <div class="key">
+    <span><svg width="84" height="20"><line x1="4" y1="10" x2="80" y2="10" stroke="var(--ink)" stroke-width="12" stroke-linecap="round"/></svg>Se eligen entre sí</span>
+    <span><svg width="84" height="20"><line x1="4" y1="10" x2="80" y2="10" stroke="var(--muted)" stroke-width="4" stroke-dasharray="10 9" stroke-linecap="round"/></svg>Sin respuesta</span>
+  </div>
+  <div class="foot"><span>Fuente: estudio transversal en secundaria, 2025–2026 (3,564 alumnos)</span><span>1 / 6</span></div>
+</section>
+
+<!-- 2 · Salón: reciprocidades -->
+<section class="scene" data-t="Salón: reciprocidades">
+  <h1 style="font-size:58px">Casi la mitad de los alumnos tiene entre 0 y 1 amistad recíproca</h1>
+  <p class="sub">Salón ilustrativo de 40 alumnos</p>
+  <div class="salon">
+    <svg id="room2" class="room" viewBox="0 0 1100 780" role="img" aria-label="Salón de 40 alumnos coloreados según reciprocidades: 8 con cero, 10 con una, 13 con dos y 9 con tres."></svg>
+    <div class="panel">
+      <button class="hero45" id="h45" aria-pressed="false"><span class="n">45</span><small>%</small></button>
+      <p class="lead">tiene 0-1 amistad recíproca</p>
+      <span class="hint">Clic en el 45% para resaltar (en pantalla sería animación)</span>
+      <div class="lgt">Reciprocidades por alumno</div>
+      <div class="legend" id="legend2"></div>
+    </div>
+  </div>
+  <div class="foot"><span>Fuente: estudio transversal en secundaria, 2025–2026 (3,564 alumnos)</span><span>2 / 6</span></div>
+</section>
+
+<!-- 3 · Rechazo -->
+<section class="scene" data-t="Salón: rechazo">
+  <h1>1 de cada 8 es rechazado por más del 30% del salón</h1>
+  <p class="sub">Salón ilustrativo de 40 alumnos</p>
+  <div class="salon solo">
+    <svg id="room3" class="room" viewBox="0 0 1100 780" role="img" aria-label="Salón de 40 alumnos con 5 resaltados en rojo."></svg>
+  </div>
+  <div class="foot"><span>Fuente: estudio transversal en secundaria, 2017–2018 y 2025–2026</span><span>3 / 6</span></div>
+</section>
+
+<!-- 4 · Sin elección positiva -->
+<section class="scene" data-t="Salón: sin elección positiva">
+  <h1>8.8% de los alumnos sin elección positiva</h1>
+  <p class="sub">Salón ilustrativo de 40 alumnos</p>
+  <div class="salon solo">
+    <svg id="room4" class="room" viewBox="0 0 1100 780" role="img" aria-label="Salón de 40 alumnos con 4 resaltados en violeta."></svg>
+  </div>
+  <div class="foot"><span>8.8% = 315 / 3,564, cálculo propio · Fuente: estudio transversal en secundaria, 2025–2026</span><span>4 / 6</span></div>
+</section>
+
+<!-- 5 · Tres reciprocidades -->
+<section class="scene" data-t="Tres reciprocidades">
+  <h1>Cómo cambiaron las reciprocidades: 2017–18 vs. 2025–26</h1>
+  <svg id="cmp" viewBox="0 0 1728 640" role="img" aria-label="Porcentaje de alumnos por número de reciprocidades. 2017–18: 23.7%, 34.0%, 30.1% y 12.2%. 2025–26: 19.7%, 25.3%, 31.8% y 23.2%."></svg>
+  <div class="foot"><span>30.1% (2 reciprocidades en 2017–18) = resto, cálculo propio · Fuente: estudio transversal en secundaria, 2017–2018 (3,762 alumnos) y 2025–2026 (3,564)</span><span>5 / 6</span></div>
+</section>
+
+<!-- 6 · Grupos -->
+<section class="scene" data-t="Grupos">
+  <h1>Ahora los grupos son de entre 2 y 3 niños</h1>
+  <svg id="grp" viewBox="0 0 1728 770" role="img" aria-label="Con un promedio de 1.59 reciprocidades, los grupos equivalentes son de entre 2 y 3 niños."></svg>
+  <div class="foot"><span>Fuente: estudio transversal en secundaria, 2025–2026</span><span>6 / 6</span></div>
+</section>
+
+</div>
+
+<div id="tip"></div>
+<nav id="chrome" aria-label="Navegación">
+  <button id="prev" title="Anterior (←)">←</button>
+  <div class="dotnav" id="dotnav"></div>
+  <button id="next" title="Siguiente (→)">→</button>
+  <span class="sep"></span>
+  <button id="replay" title="Repetir animación (R)">Repetir</button>
+  <button id="fs" title="Pantalla completa (F)">Pantalla completa</button>
+</nav>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const P=new URLSearchParams(location.search);
+const STATIC=P.has('static'); if(P.has('clean')||STATIC) document.body.classList.add('clean');
+const REDUCE=STATIC||matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=n=>n.toLocaleString('en-US');
+const NAMES=['Cero reciprocidades','Una reciprocidad','Dos reciprocidades','Tres reciprocidades'];
+const G25=[{n:702,p:19.7},{n:900,p:25.3},{n:1134,p:31.8},{n:828,p:23.2}];
+
+/* escala del escenario */
+const stage=$('#stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+addEventListener('resize',fit);fit();
+
+/* tooltip */
+const tip=$('#tip');
+function showTip(html,e){tip.innerHTML=html;tip.style.opacity=1;const w=tip.offsetWidth;let x=e.clientX+16,y=e.clientY+16;if(x+w>innerWidth-8)x=e.clientX-w-16;if(y+tip.offsetHeight>innerHeight-8)y=e.clientY-tip.offsetHeight-16;tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.style.opacity=0;}
+document.addEventListener('mousemove',e=>{const t=e.target.closest('[data-tip]');if(t)showTip(t.dataset.tip,e);else hideTip();});
+
+/* ícono de persona (para nodos) */
+function person(cx,cy,s,fill,extra=''){
+  return `<g transform="translate(${cx},${cy}) scale(${s})" ${extra}><circle cx="0" cy="-19" r="13" fill="${fill}"/><path d="M-22 14 C-22 -5 -11 -8 0 -8 C11 -8 22 -5 22 14 Z" fill="${fill}"/></g>`;
+}
+
+/* escena 1: nodos grandes; la reciprocidad es un vínculo grueso con flecha doble */
+function netSVG(g){
+  const col=`var(--r${g})`, c=[200,170], peers=[[62,62],[338,62],[200,352]];
+  let s=`<svg viewBox="0 0 400 380" width="400" height="380" role="img" aria-label="Alumno con ${g} reciprocidades"><defs>`+
+    `<marker id="mb${g}" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="1.9" markerHeight="1.9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${col}"/></marker>`+
+    `<marker id="ma${g}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>`;
+  peers.forEach((p,k)=>{
+    const mutual=k<g, dx=p[0]-c[0], dy=p[1]-c[1], L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+    const x1=c[0]+ux*(uy>0.9?58:54), y1=c[1]+uy*(uy>0.9?58:54), x2=p[0]-ux*(mutual?42:48), y2=p[1]-uy*(mutual?42:48);
+    s+= mutual
+      ? `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="15" stroke-linecap="round" marker-start="url(#mb${g})" marker-end="url(#mb${g})"/>`
+      : `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)" stroke-width="4" stroke-dasharray="11 10" stroke-linecap="round" marker-end="url(#ma${g})"/>`;
+  });
+  peers.forEach((p,k)=>{ s+=person(p[0],p[1]+4,1.7,k<g?col:'var(--peer)'); });
+  s+=person(c[0],c[1]+8,2.3,col);
+  return s+'</svg>';
+}
+$('#cards').innerHTML=G25.map((d,g)=>`<div class="card k${g}" data-tip="${NAMES[g]}: ${d.p}% de los alumnos (${fmt(d.n)} de 3,564)">${netSVG(g)}<div class="num">${g}</div><div class="w">${g===1?'reciprocidad':'reciprocidades'}</div></div>`).join('');
+
+/* salón: 40 alumnos (8 × 5) */
+function rng(seed){return()=>(seed=(seed*1664525+1013904223)>>>0)/4294967296;}
+function shuffled(a,seed){const r=rng(seed),b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function buildRoom(svg,assign,seed){
+  const order=shuffled(assign,seed); let h='';
+  order.forEach((k,i)=>{
+    const col=i%8,row=Math.floor(i/8),x=62+col*137,y=110+row*150;
+    h+=`<g class="stu${k.iso?' iso':''}" data-k="${k.key}" data-final="${k.fill}" transform="translate(${x},${y})" data-tip="${k.tip}">`+
+       `<circle class="ring" cx="0" cy="-8" r="64"/>`+
+       `<circle class="hd" cx="0" cy="-32" r="17"/>`+
+       `<path class="bd" d="M-29 16 C-29 -8 -15 -14 0 -14 C15 -14 29 -8 29 16 Z"/>`+
+       `<rect class="dk" x="-40" y="10" width="80" height="14" rx="6"/></g>`;
+  });
+  svg.innerHTML=h;
+}
+function revealRoom(svg){
+  const cs=$$('.stu',svg);
+  cs.forEach(c=>{c.style.transition='none';c.style.transitionDelay='0ms';c.style.fill='var(--peer)';});
+  void svg.getBoundingClientRect();
+  cs.forEach((c,i)=>{ if(REDUCE){c.style.fill=c.dataset.final;return;} c.style.transition='';c.style.transitionDelay=(250+i*50)+'ms';c.style.fill=c.dataset.final; });
+}
+{ const a=[];[8,10,13,9].forEach((n,g)=>{for(let k=0;k<n;k++)a.push({key:g,fill:`var(--r${g})`,tip:`<b>${NAMES[g]}</b><br>${G25[g].p}% de los alumnos (${fmt(G25[g].n)})`});}); buildRoom($('#room2'),a,11); }
+{ const a=[];for(let i=0;i<40;i++)a.push(i<5?{key:'rej',fill:'var(--rej)',tip:'<b>Rechazo elevado</b><br>12.6% de los alumnos (450)'}:{key:'rest',fill:'var(--peer)',tip:'Resto del salón'}); buildRoom($('#room3'),a,5); }
+{ const a=[];for(let i=0;i<40;i++)a.push(i<4?{key:'nop',iso:true,fill:'var(--nop)',tip:'<b>Ninguna elección positiva</b><br>8.8% de los alumnos (315)'}:{key:'rest',fill:'var(--peer)',tip:'Resto del salón'}); buildRoom($('#room4'),a,23); }
+
+/* escena 2: leyenda 0–3, selección del 45% */
+$('#legend2').innerHTML=G25.map((d,g)=>`<button class="lg" data-g="${g}"><span class="sw c${g}"></span><b>${g}</b><span class="v">${d.p}%</span></button>`).join('');
+let lock45=false, hoverG=null;
+function applyHL(){
+  const on=hoverG!==null?[hoverG]:lock45?[0,1]:null;
+  $$('#room2 .stu').forEach(c=>c.style.opacity=(!on||on.includes(+c.dataset.k))?1:.14);
+  $$('#legend2 .lg').forEach(b=>{const g=+b.dataset.g,ok=!on||on.includes(g);b.style.opacity=ok?1:.28;b.classList.toggle('hl',!!on&&ok&&hoverG!==null);});
+  $('#h45').classList.toggle('on',lock45); $('#h45').setAttribute('aria-pressed',lock45);
+}
+$('#h45').addEventListener('click',()=>{lock45=!lock45;applyHL();});
+$$('#legend2 .lg').forEach(b=>{b.addEventListener('mouseenter',()=>{hoverG=+b.dataset.g;applyHL();});b.addEventListener('mouseleave',()=>{hoverG=null;applyHL();});});
+$('#room2').addEventListener('mouseover',e=>{const c=e.target.closest('.stu');if(c){hoverG=+c.dataset.k;applyHL();}});
+$('#room2').addEventListener('mouseleave',()=>{hoverG=null;applyHL();});
+
+/* escena 5: comparación completa 2017–18 vs 2025–26 */
+{
+  const F='var(--font)', base=560, K=13.5, bw=172, gap=14, GW=2*bw+gap, step=(1728-GW)/3;
+  const old=[23.7,34.0,30.1,12.2], now=[19.7,25.3,31.8,23.2];
+  let h='';
+  old.forEach((o,i)=>{
+    const x0=i*step, xn=x0+bw+gap, ho=o*K, hn=now[i]*K;
+    h+=`<rect class="bar5" style="animation-delay:${(i*0.18).toFixed(2)}s" x="${x0}" y="${base-ho}" width="${bw}" height="${ho}" rx="6" fill="#c9ccd3" data-tip="<b>2017–18</b><br>${i} reciprocidades: ${o.toFixed(1)}%"/>`+
+       `<rect class="bar5" style="animation-delay:${(i*0.18+0.1).toFixed(2)}s" x="${xn}" y="${base-hn}" width="${bw}" height="${hn}" rx="6" fill="var(--r${i})" data-tip="<b>2025–26</b><br>${i} reciprocidades: ${now[i].toFixed(1)}%"/>`+
+       `<text x="${x0+bw/2}" y="${base-ho-14}" font-size="42" font-weight="700" text-anchor="middle" fill="#6b6b6b" font-family="${F}">${o.toFixed(1)}%</text>`+
+       `<text x="${xn+bw/2}" y="${base-hn-14}" font-size="48" font-weight="800" text-anchor="middle" fill="#121212" font-family="${F}">${now[i].toFixed(1)}%</text>`+
+       `<text x="${x0+bw/2}" y="${base+36}" font-size="28" text-anchor="middle" fill="#6b6b6b" font-family="${F}">2017–18</text>`+
+       `<text x="${xn+bw/2}" y="${base+36}" font-size="28" font-weight="700" text-anchor="middle" fill="#121212" font-family="${F}">2025–26</text>`+
+       `<text x="${x0+GW/2}" y="${base+120}" font-size="80" font-weight="700" text-anchor="middle" fill="#121212" font-family="var(--head)">${i}</text>`;
+  });
+  h+=`<text x="1728" y="${base+170}" font-size="26" text-anchor="end" fill="#6b6b6b" font-family="${F}">reciprocidades por alumno</text>`;
+  h+=`<line x1="0" y1="${base}" x2="1728" y2="${base}" stroke="#cfd2d8" stroke-width="3"/>`;
+  $('#cmp').innerHTML=h;
+}
+
+/* escena 6: grupos cerrados equivalentes al promedio */
+{
+  const X0=110, W=1508, t=v=>X0+v/3*W, col=k=>`var(--r${k})`;
+  const link=(a,b,k)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${col(k)}" stroke-width="9" stroke-linecap="round"/>`;
+  const nodes=(pts,k)=>pts.map(p=>person(p[0],p[1]+10,1.9,col(k))).join('');
+  const clique=(pts,k)=>{let s='';for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)s+=link(pts[i],pts[j],k);return s+nodes(pts,k);};
+  const cl=[
+    {k:0,x:t(0),svg:nodes([[t(0),330]],0),name:'sin vínculo',tip:'0 reciprocidades: ningún vínculo mutuo'},
+    {k:1,x:t(1),svg:clique([[t(1)-82,330],[t(1)+82,330]],1),name:'pareja',tip:'Pareja: cada uno con 1 reciprocidad'},
+    {k:2,x:t(2),svg:clique([[t(2),262],[t(2)-90,382],[t(2)+90,382]],2),name:'trío',tip:'Trío cerrado: cada uno con 2 reciprocidades'},
+    {k:3,x:t(3),svg:clique([[t(3)-84,262],[t(3)+84,262],[t(3)-84,392],[t(3)+84,392]],3),name:'grupo de 4',tip:'Grupo de 4 cerrado: cada uno con 3 reciprocidades (el máximo)'}
+  ];
+  let h=`<rect x="${t(1)-140}" y="150" width="${t(2)-t(1)+280}" height="330" rx="22" fill="#eef4ff"/>`+
+        `<text x="${(t(1)+t(2))/2}" y="204" font-size="36" font-weight="700" text-anchor="middle" fill="#1b3fae" font-family="var(--font)">grupos de 2 o 3</text>`+
+        ``;
+  cl.forEach((c,i)=>{h+=`<g class="cl" style="animation-delay:${(i*0.35).toFixed(2)}s" data-tip="${c.tip}">${c.svg}</g>`;});
+  h+=`<line x1="${X0}" y1="560" x2="${t(3)}" y2="560" stroke="#cfd2d8" stroke-width="6" stroke-linecap="round"/>`;
+  cl.forEach((c,i)=>{h+=`<circle cx="${t(i)}" cy="560" r="13" fill="#fff" stroke="#6b6b6b" stroke-width="5"/>`+
+    `<text x="${t(i)}" y="646" font-size="64" font-weight="800" text-anchor="middle" fill="#121212" font-family="var(--head)">${i}</text>`+
+    `<text x="${t(i)}" y="686" font-size="28" text-anchor="middle" fill="#6b6b6b" font-family="var(--font)">${c.name}</text>`;});
+  h+=`<text x="${t(3)+60}" y="760" font-size="26" text-anchor="end" fill="#6b6b6b" font-family="var(--font)">reciprocidades por alumno</text>`;
+  h+=`<g id="pin6" style="transform:translateX(0px)"><g transform="translate(${X0},0)"><line x1="0" y1="578" x2="0" y2="690" stroke="#121212" stroke-width="3" stroke-dasharray="8 7"/><path d="M0 548 L-17 516 A19 19 0 1 1 17 516 Z" fill="#121212"/><circle cx="0" cy="500" r="7" fill="#fff"/></g></g>`;
+  h+=`<g id="pinlab" style="transition:opacity .6s .9s;opacity:0"><text x="${t(1.586)}" y="772" font-size="104" font-weight="800" text-anchor="middle" fill="#121212" font-family="var(--font)" letter-spacing="-3"><tspan font-size="48" font-weight="600" fill="#4a4a4a" letter-spacing="0">promedio </tspan>1.59</text></g>`;
+  $('#grp').innerHTML=h;
+  window.__pinX=t(1.586)-X0;
+}
+function playGrp(){
+  const s=$('#grp'),pin=$('#pin6'),lab=$('#pinlab');
+  s.classList.remove('pop'); pin.style.transition='none'; pin.style.transform='translateX(0px)'; lab.style.transition='none'; lab.style.opacity=0;
+  void s.getBoundingClientRect();
+  if(REDUCE){pin.style.transform=`translateX(${__pinX}px)`;lab.style.opacity=1;return;}
+  s.classList.add('pop'); pin.style.transition=''; lab.style.transition='';
+  pin.style.transform=`translateX(${__pinX}px)`; lab.style.opacity=1;
+}
+function playCmp(){const s=$('#cmp');s.classList.remove('pop');void s.getBoundingClientRect();if(!REDUCE)s.classList.add('pop');}
+
+/* navegación */
+const scenes=$$('.scene'); let cur=-1;
+$('#dotnav').innerHTML=scenes.map((s,i)=>`<button data-i="${i}" title="${s.dataset.t}">${i+1}</button>`).join('');
+function enter(i){
+  if(i===1){revealRoom($('#room2'));lock45=P.has('sel');hoverG=null;applyHL();}
+  if(i===2)revealRoom($('#room3')); if(i===3)revealRoom($('#room4')); if(i===4)playCmp(); if(i===5)playGrp();
+}
+function go(i,push=true){
+  i=Math.max(0,Math.min(scenes.length-1,i)); if(i===cur)return;
+  cur=i; scenes.forEach((s,k)=>s.classList.toggle('on',k===i));
+  $$('#dotnav button').forEach((b,k)=>b.classList.toggle('on',k===i));
+  if(push){try{history.replaceState(null,'','#escena-'+(i+1));}catch(e){}} hideTip(); enter(i);
+}
+const fromHash=()=>(parseInt((location.hash||'').replace(/\D/g,''))||1)-1;
+$('#prev').onclick=()=>go(cur-1); $('#next').onclick=()=>go(cur+1);
+$('#dotnav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(+b.dataset.i);});
+$('#replay').onclick=()=>{const i=cur;cur=-1;go(i,false);};
+function toggleFS(){try{if(document.fullscreenElement){document.exitFullscreen();}else{const p=document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();p&&p.catch&&p.catch(()=>{});}}catch(e){}}
+$('#fs').onclick=toggleFS;
+addEventListener('keydown',e=>{
+  const k=e.key;
+  if(k==='ArrowRight'||k==='PageDown'||k===' ')go(cur+1); else if(k==='ArrowLeft'||k==='PageUp')go(cur-1);
+  else if(k==='Home')go(0); else if(k==='End')go(scenes.length-1);
+  else if(/^[1-6]$/.test(k))go(+k-1);
+  else if(k==='f'||k==='F')toggleFS(); else if(k==='r'||k==='R')$('#replay').click();
+  if(k===' ')e.preventDefault();
+});
+let idle; const chrome=$('#chrome');
+function wake(){chrome.classList.remove('hide');clearTimeout(idle);idle=setTimeout(()=>{if(document.fullscreenElement)chrome.classList.add('hide');},2500);}
+addEventListener('mousemove',wake); document.addEventListener('fullscreenchange',wake);
+go(fromHash(),false);
+addEventListener('hashchange',()=>go(fromHash(),false));
+</script>
+</body>
+</html>
